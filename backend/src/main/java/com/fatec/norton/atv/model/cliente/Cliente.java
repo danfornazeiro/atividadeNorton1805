@@ -1,9 +1,7 @@
 package com.fatec.norton.atv.model.cliente;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fatec.norton.atv.model.carrinho.Carrinho;
+import jakarta.persistence.*;
 
 @Entity
 public class Cliente {
@@ -16,6 +14,16 @@ public class Cliente {
 	private String senha;
 	private String telefone;
 	private String logradouro;
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+	private Carrinho cesta;
+
+	public Carrinho getCesta() {
+		return cesta;
+	}
+
+	public void setCesta(Carrinho cesta) {
+		this.cesta = cesta;
+	}
 
 	public Long getCodigo() {
 		return codigo;
