@@ -1,14 +1,16 @@
 package com.fatec.norton.atv.dto;
 
+import java.util.List;
+
 public class CarrinhoRequestDTO {
 
-    private Long produtoId;
+    private List<Long> produtoId;
 
-    public Long getProdutoId() {
+    public List<Long> getProdutoId() {
         return produtoId;
     }
 
-    public void setProdutoId(Long produtoId) {
+    public void setProdutoId(List<Long> produtoId) {
         this.produtoId = produtoId;
     }
 }

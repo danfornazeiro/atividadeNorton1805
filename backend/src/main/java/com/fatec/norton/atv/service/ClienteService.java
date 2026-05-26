@@ -3,6 +3,7 @@ package com.fatec.norton.atv.service;
 import com.fatec.norton.atv.dto.ClienteAlterarSenhaRequestDTO;
 import com.fatec.norton.atv.dto.ClienteRequestDTO;
 import com.fatec.norton.atv.dto.ClienteResponseDTO;
+import com.fatec.norton.atv.dto.EmailRequestDTO;
 import com.fatec.norton.atv.model.carrinho.Carrinho;
 import com.fatec.norton.atv.model.cliente.Cliente;
 import com.fatec.norton.atv.repository.ClienteRepository;
@@ -18,11 +19,13 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final CarrinhoRepository carrinhoRepository;
+    private final EmailService emailService;
 
     public ClienteService(ClienteRepository clienteRepository,
-                         CarrinhoRepository carrinhoRepository) {
+                          CarrinhoRepository carrinhoRepository, EmailService emailService) {
         this.clienteRepository = clienteRepository;
         this.carrinhoRepository = carrinhoRepository;
+        this.emailService = emailService;
     }
 
     public List<ClienteResponseDTO> listar() {
@@ -49,6 +52,83 @@ public class ClienteService {
         clienteSalvo.setCesta(carrinhoSalvo);
         clienteRepository.save(clienteSalvo);
 
+        EmailRequestDTO email = new EmailRequestDTO();
+
+        email.setTo(clienteSalvo.getEmail());
+
+        email.setSubject("🎉 Bem-vindo(a) à plataforma!");
+
+        String html = """
+    <div style="
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: auto;
+        padding: 30px;
+        background-color: #f4f4f4;
+        border-radius: 12px;
+    ">
+
+        <div style="
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        ">
+
+            <h1 style="
+                color: #2563eb;
+                text-align: center;
+            ">
+                Bem-vindo(a)!
+            </h1>
+
+            <p style="
+                font-size: 16px;
+                color: #333;
+                line-height: 1.6;
+            ">
+                Olá <strong>%s</strong>,
+            </p>
+
+            <p style="
+                font-size: 16px;
+                color: #333;
+                line-height: 1.6;
+            ">
+                Sua conta foi criada com sucesso 🚀
+            </p>
+
+            <p style="
+                font-size: 16px;
+                color: #333;
+                line-height: 1.6;
+            ">
+                Agora você já pode acessar a plataforma.
+            </p>
+
+            <div style="text-align:center; margin-top:30px;">
+
+                <a href="http://localhost:4200/login"
+                   style="
+                    background-color:#2563eb;
+                    color:white;
+                    padding:14px 24px;
+                    border-radius:8px;
+                    text-decoration:none;
+                    font-weight:bold;
+                   ">
+                    Acessar Plataforma
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+    """.formatted(clienteSalvo.getNome());
+
+        email.setBody(html);
+
+        emailService.sendSimpleEmail(email);
         return new ClienteResponseDTO(clienteSalvo);
     }
 

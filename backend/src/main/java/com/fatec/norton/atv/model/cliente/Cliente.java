@@ -1,7 +1,10 @@
 package com.fatec.norton.atv.model.cliente;
 
 import com.fatec.norton.atv.model.carrinho.Carrinho;
+import com.fatec.norton.atv.model.pedido.Pedido;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Cliente {
@@ -16,6 +19,8 @@ public class Cliente {
 	private String logradouro;
 	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private Carrinho cesta;
+	@OneToMany
+	private List<Pedido> pedidos;
 
 	public Carrinho getCesta() {
 		return cesta;

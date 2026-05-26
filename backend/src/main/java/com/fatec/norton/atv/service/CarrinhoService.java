@@ -2,6 +2,7 @@ package com.fatec.norton.atv.service;
 
 import com.fatec.norton.atv.dto.CarrinhoRequestDTO;
 import com.fatec.norton.atv.dto.CarrinhoResponseDTO;
+import com.fatec.norton.atv.dto.EmailRequestDTO;
 import com.fatec.norton.atv.model.carrinho.Carrinho;
 import com.fatec.norton.atv.model.cliente.Cliente;
 import com.fatec.norton.atv.model.produto.Produto;
@@ -10,6 +11,8 @@ import com.fatec.norton.atv.repository.ClienteRepository;
 import com.fatec.norton.atv.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 @Service
@@ -34,19 +37,33 @@ public class CarrinhoService {
     }
 
 
-    public CarrinhoResponseDTO adicionarProdutos(CarrinhoRequestDTO dto, Long clienteId, UUID carrinhoId){
+    public CarrinhoResponseDTO adicionarProdutos(
+            CarrinhoRequestDTO dto,
+            Long clienteId,
+            UUID carrinhoId
+    ) {
+
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente nao encontrado."));
-        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
-                .orElseThrow(() -> new RuntimeException("carrinho nao encontrado."));
-        Produto produto = produtoRepository.findById(dto.getProdutoId())
-                .orElseThrow(() -> new RuntimeException("produto nao encontrado."));
 
-        carrinho.getProdutos().add(produto);
+        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Carrinho nao encontrado."));
+
+        for (Long produtoId : dto.getProdutoId()) {
+            Produto produto = produtoRepository.findById(produtoId)
+                    .orElseThrow(() -> new RuntimeException("Produto nao encontrado: " + produtoId));
+
+            carrinho.getProdutos().add(produto);
+        }
+
         cliente.setCesta(carrinho);
 
-       Carrinho carrinhoSalvo = carrinhoRepository.save(carrinho);
-       return new CarrinhoResponseDTO(carrinhoSalvo);
- }
+        Carrinho carrinhoSalvo = carrinhoRepository.save(carrinho);
+
+
+
+
+        return new CarrinhoResponseDTO(carrinhoSalvo);
+    }
 
 }
