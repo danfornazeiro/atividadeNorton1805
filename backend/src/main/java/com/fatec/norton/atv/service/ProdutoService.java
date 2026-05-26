@@ -36,6 +36,7 @@ public class ProdutoService {
 
 		existente.setNome(produto.getNome());
 		existente.setDescricao(produto.getDescricao());
+		existente.setImageUrl(produto.getImageUrl());
 		existente.setValor(produto.getValor());
 		existente.setPromo(produto.getPromo());
 		existente.setQuantidade(produto.getQuantidade());
