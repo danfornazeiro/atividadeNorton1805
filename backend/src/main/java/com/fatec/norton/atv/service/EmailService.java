@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fatec.norton.atv.config.EmailConfig;
 import com.fatec.norton.atv.dto.EmailRequestDTO;
 import com.fatec.norton.atv.mail.EmailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import tools.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
@@ -22,6 +22,7 @@ public class EmailService {
         this.emailConfig = emailConfig;
     }
 
+    @Async
     public void sendSimpleEmail(EmailRequestDTO emailRequestDTO){
         emailSender
                 .To(emailRequestDTO.getTo())
@@ -30,6 +31,7 @@ public class EmailService {
                 .send(emailConfig);
     }
 
+    @Async
     public void setEmailWithAttachment(String emailRequestJson, MultipartFile attachment){
         File tempFile = null;
         try {
