@@ -1,5 +1,8 @@
 package com.fatec.norton.atv.controller;
 
+import com.fatec.norton.atv.dto.ClienteAlterarSenhaRequestDTO;
+import com.fatec.norton.atv.dto.ClienteRequestDTO;
+import com.fatec.norton.atv.dto.ClienteResponseDTO;
 import com.fatec.norton.atv.model.cliente.Cliente;
 import com.fatec.norton.atv.service.ClienteService;
 import org.springframework.http.HttpStatus;
@@ -28,25 +31,30 @@ public class ClienteController {
 	}
 
 	@GetMapping
-	public List<Cliente> listar() {
+	public List<ClienteResponseDTO> listar() {
 		return clienteService.listar();
 	}
 
 	@PostMapping
-	public ResponseEntity<Cliente> criar(@RequestBody Cliente cliente) {
-		Cliente criado = clienteService.criar(cliente);
-		return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+	public ResponseEntity<ClienteResponseDTO> criar(@RequestBody ClienteRequestDTO clienteRequestDTO) {
+		return ResponseEntity.ok(clienteService.criar(clienteRequestDTO));
 	}
 
-	@PatchMapping("/{codigo}")
-	public Cliente atualizar(@PathVariable Long codigo, @RequestBody Cliente cliente) {
-		return clienteService.atualizar(codigo, cliente);
+	@PatchMapping("/{id}")
+	public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+		return clienteService.atualizar(id, cliente);
 	}
 
-	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Void> excluir(@PathVariable Long codigo) {
-		clienteService.excluir(codigo);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		clienteService.excluir(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PatchMapping("/alterarSenha/{id}")
+	public String alterarSenha(@PathVariable Long id, @RequestBody ClienteAlterarSenhaRequestDTO dto) {
+		clienteService.alterarSenha(id, dto);
+		return "";
 	}
 }
 

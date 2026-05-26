@@ -31,6 +31,10 @@ public class ProdutoController {
 	public List<Produto> listar() {
 		return produtoService.listar();
 	}
+	@GetMapping("/{nome}")
+	public List<Produto> listarPeloNome(@PathVariable String nome) {
+		return produtoService.listarPeloNome(nome);
+	}
 
 	@PostMapping
 	public ResponseEntity<Produto> criar(@RequestBody Produto produto) {
@@ -38,14 +42,14 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(criado);
 	}
 
-	@PatchMapping("/{codigo}")
-	public Produto atualizar(@PathVariable Long codigo, @RequestBody Produto produto) {
-		return produtoService.atualizar(codigo, produto);
+	@PatchMapping("/{id}")
+	public Produto atualizar(@PathVariable Long id, @RequestBody Produto produto) {
+		return produtoService.atualizar(id, produto);
 	}
 
-	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Void> excluir(@PathVariable Long codigo) {
-		produtoService.excluir(codigo);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> excluir(@PathVariable Long id) {
+		produtoService.excluir(id);
 		return ResponseEntity.noContent().build();
 	}
 }

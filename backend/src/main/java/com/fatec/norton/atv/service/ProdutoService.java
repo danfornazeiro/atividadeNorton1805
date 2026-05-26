@@ -21,13 +21,17 @@ public class ProdutoService {
 		return produtoRepository.findAll();
 	}
 
+	public List<Produto> listarPeloNome(String nome) {
+		return produtoRepository.findByNomeContainingIgnoreCase(nome);
+	}
+
 	public Produto criar(Produto produto) {
-		produto.setCodigo(null);
+		produto.setId(null);
 		return produtoRepository.save(produto);
 	}
 
-	public Produto atualizar(Long codigo, Produto produto) {
-		Produto existente = produtoRepository.findById(codigo)
+	public Produto atualizar(Long id, Produto produto) {
+		Produto existente = produtoRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 
 		existente.setNome(produto.getNome());
@@ -39,11 +43,11 @@ public class ProdutoService {
 		return produtoRepository.save(existente);
 	}
 
-	public void excluir(Long codigo) {
-		if (!produtoRepository.existsById(codigo)) {
+	public void excluir(Long id) {
+		if (!produtoRepository.existsById(id)) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado");
 		}
-		produtoRepository.deleteById(codigo);
+		produtoRepository.deleteById(id);
 	}
 }
 

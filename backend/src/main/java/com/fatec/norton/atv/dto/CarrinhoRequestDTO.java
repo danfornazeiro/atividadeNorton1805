@@ -1,10 +1,14 @@
 package com.fatec.norton.atv.dto;
 
-import java.util.UUID;
-
 public class CarrinhoRequestDTO {
 
-    private UUID id;
     private Long produtoId;
 
+    public Long getProdutoId() {
+        return produtoId;
+    }
+
+    public void setProdutoId(Long produtoId) {
+        this.produtoId = produtoId;
+    }
 }

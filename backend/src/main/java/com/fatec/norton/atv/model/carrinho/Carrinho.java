@@ -13,7 +13,8 @@ public class Carrinho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID carrinho;
+    private UUID carrinhoId;
+
 
     @OneToOne
     @JoinColumn(name = "cliente_id")
@@ -27,13 +28,14 @@ public class Carrinho {
     )
     private List<Produto> produtos;
 
-    public UUID getCarrinho() {
-        return carrinho;
+    public UUID getCarrinhoId() {
+        return carrinhoId;
     }
 
-    public void setCarrinho(UUID carrinho) {
-        this.carrinho = carrinho;
+    public void setCarrinhoId(UUID carrinhoId) {
+        this.carrinhoId = carrinhoId;
     }
+
 
     public Cliente getCliente() {
         return cliente;
