@@ -6,6 +6,7 @@ public record ClienteResponseDTO(
 
         Long id,
         String nome,
+        String senha,
         String email,
         String telefone,
         String logradouro,
@@ -17,6 +18,7 @@ public record ClienteResponseDTO(
         this(
                 cliente.getId(),
                 cliente.getNome(),
+                cliente.getSenha(),
                 cliente.getEmail(),
                 cliente.getTelefone(),
                 cliente.getLogradouro(),

@@ -53,7 +53,14 @@ public class CarrinhoService {
             Produto produto = produtoRepository.findById(produtoId)
                     .orElseThrow(() -> new RuntimeException("Produto nao encontrado: " + produtoId));
 
+            if(produto.getQuantidade() <= 0){
+                throw new RuntimeException("Produto sem estoque: " + produto.getNome());
+            }
+
+            produto.setQuantidade(produto.getQuantidade() - 1);
+
             carrinho.getProdutos().add(produto);
+            produtoRepository.save(produto);
         }
 
         cliente.setCesta(carrinho);

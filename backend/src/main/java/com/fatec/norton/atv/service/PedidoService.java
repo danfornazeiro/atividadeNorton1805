@@ -46,21 +46,18 @@ public class PedidoService {
         BigDecimal total = BigDecimal.ZERO;
 
         for (Produto p : carrinho.getProdutos()) {
-
             total = total.add(p.getValor());
 
             produtosHtml.append("""
                 <div style="
-                    background:#ffffff;
-                    border-radius:12px;
-                    padding:15px;
-                    margin-bottom:12px;
-                    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 16px 0;
+                    border-bottom: 1px solid #2a2a2a;
                 ">
-                    <h3 style="margin:0; color:#2563eb;">%s</h3>
-                    <p style="margin:5px 0; color:#333;">
-                        Preço: R$ %s
-                    </p>
+                    <span style="color: #ffffff; font-size: 14px; font-weight: 500;">%s</span>
+                    <span style="color: #b0b0b0; font-size: 14px;">R$ %s</span>
                 </div>
             """.formatted(
                     p.getNome(),
@@ -70,73 +67,172 @@ public class PedidoService {
 
         String html = """
         <div style="
-            font-family: Arial, sans-serif;
-            max-width: 650px;
-            margin: auto;
-            background:#f4f4f4;
-            padding:30px;
-            border-radius:12px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            color: #ffffff;
         ">
 
+            <!-- Header com branding -->
             <div style="
-                background:white;
-                padding:30px;
-                border-radius:12px;
-                box-shadow:0 2px 10px rgba(0,0,0,0.1);
+                background: #0f0f0f;
+                padding: 40px 30px;
+                text-align: center;
+                border-bottom: 2px solid #2a2a2a;
             ">
+                <div style="
+                    font-size: 28px;
+                    font-weight: 900;
+                    letter-spacing: 2px;
+                    color: #ffffff;
+                    margin-bottom: 8px;
+                ">
+                    DROP CITY
+                </div>
+                <div style="
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    color: #7a7a7a;
+                    text-transform: uppercase;
+                ">
+                    STREETWEAR LAB
+                </div>
+            </div>
 
-                <h1 style="text-align:center; color:#16a34a;">
-                    🎉 Pedido confirmado!
+            <!-- Conteúdo Principal -->
+            <div style="padding: 40px 30px;">
+
+                <h1 style="
+                    font-size: 32px;
+                    font-weight: 900;
+                    margin: 0 0 8px 0;
+                    letter-spacing: 1px;
+                    color: #ffffff;
+                ">
+                    PEDIDO CONFIRMADO
                 </h1>
 
-                <p style="font-size:16px; color:#333;">
-                    Olá <strong>%s</strong>, seu pedido foi recebido e já está sendo processado 🚚
+                <p style="
+                    font-size: 14px;
+                    color: #b0b0b0;
+                    margin: 0 0 30px 0;
+                ">
+                    Obrigado, <strong style="color: #ffffff;">%s</strong>
                 </p>
 
+                <!-- Status -->
                 <div style="
-                    background:#e0f2fe;
-                    padding:12px;
-                    border-radius:10px;
-                    margin:20px 0;
+                    background: #1a1a1a;
+                    border-left: 3px solid #ffffff;
+                    padding: 16px;
+                    margin-bottom: 30px;
                 ">
-                    <strong>Status:</strong> Processando pedido
+                    <p style="
+                        margin: 0;
+                        font-size: 12px;
+                        color: #b0b0b0;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    ">
+                        Status do pedido
+                    </p>
+                    <p style="
+                        margin: 8px 0 0 0;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #ffffff;
+                    ">
+                        Em processamento
+                    </p>
                 </div>
 
-                <h2 style="color:#111;">🛍️ Produtos</h2>
-
-                %s
-
-                <div style="
-                    margin-top:20px;
-                    padding:15px;
-                    background:#f0fdf4;
-                    border-radius:10px;
-                ">
-                    <h2 style="margin:0; color:#166534;">
-                        💰 Total: R$ %s
+                <!-- Produtos -->
+                <div style="margin-bottom: 30px;">
+                    <h2 style="
+                        font-size: 14px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        color: #ffffff;
+                        margin: 0 0 20px 0;
+                    ">
+                        Itens do pedido
                     </h2>
+                    %s
                 </div>
 
-                <div style="text-align:center; margin-top:30px;">
+                <!-- Total -->
+                <div style="
+                    background: #0f0f0f;
+                    padding: 20px;
+                    margin-bottom: 30px;
+                    border-top: 1px solid #2a2a2a;
+                    border-bottom: 1px solid #2a2a2a;
+                ">
+                    <div style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    ">
+                        <span style="
+                            font-size: 14px;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            color: #b0b0b0;
+                            font-weight: 700;
+                        ">
+                            Total
+                        </span>
+                        <span style="
+                            font-size: 24px;
+                            font-weight: 900;
+                            color: #ffffff;
+                        ">
+                            R$ %s
+                        </span>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div style="text-align: center; margin-bottom: 30px;">
                     <a href="http://localhost:4200/pedidos"
                        style="
-                        background:#16a34a;
-                        color:white;
-                        padding:14px 26px;
-                        border-radius:8px;
-                        text-decoration:none;
-                        font-weight:bold;
-                        display:inline-block;
+                        background: #ffffff;
+                        color: #000000;
+                        padding: 16px 40px;
+                        border-radius: 0;
+                        text-decoration: none;
+                        font-weight: 700;
+                        display: inline-block;
+                        font-size: 14px;
+                        letter-spacing: 1px;
+                        text-transform: uppercase;
+                        transition: all 0.3s ease;
                        ">
-                        📦 Acompanhar pedido
+                        ACOMPANHAR PEDIDO
                     </a>
                 </div>
 
-                <p style="text-align:center; margin-top:20px; font-size:12px; color:#777;">
-                    Obrigado por comprar com a gente 💙
-                </p>
-
             </div>
+
+            <!-- Footer -->
+            <div style="
+                background: #0f0f0f;
+                padding: 30px;
+                text-align: center;
+                border-top: 1px solid #2a2a2a;
+                font-size: 12px;
+                color: #7a7a7a;
+            ">
+                <p style="margin: 0 0 10px 0;">
+                    Drop City - Streetwear Lab © 2026
+                </p>
+                <p style="margin: 0;">
+                    Conectando moda urbana com qualidade
+                </p>
+            </div>
+
         </div>
         """.formatted(
                 carrinho.getCliente().getNome(),

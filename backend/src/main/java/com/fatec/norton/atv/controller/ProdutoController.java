@@ -4,7 +4,6 @@ import com.fatec.norton.atv.model.produto.Produto;
 import com.fatec.norton.atv.service.ProdutoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produto")
-@CrossOrigin(origins = "*")
 public class ProdutoController {
 
 	private final ProdutoService produtoService;
