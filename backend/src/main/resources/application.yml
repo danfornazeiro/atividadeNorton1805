@@ -3,9 +3,9 @@ spring:
     name: demo
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/atvNorton1805
+    url: jdbc:postgresql://172.17.0.1:5555/atvNorton1805
     username: postgres
-    password: ${DATABASE_PASSWORD}
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:
