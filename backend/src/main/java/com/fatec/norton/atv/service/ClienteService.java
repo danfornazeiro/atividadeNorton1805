@@ -322,7 +322,7 @@ public class ClienteService {
 
             <!-- CTA -->
             <div style="text-align: center;">
-                <a href="http://localhost:4200/profile"
+                <a href="https://frontend-p2-psi.vercel.app/profile"
                    style="
                     background: #ffffff;
                     color: #000000;
@@ -479,7 +479,7 @@ public class ClienteService {
 
             <!-- CTA -->
             <div style="text-align: center;">
-                <a href="http://localhost:4200/register"
+                <a href="https://frontend-p2-psi.vercel.app/create-profile"
                    style="
                     background: #ffffff;
                     color: #000000;

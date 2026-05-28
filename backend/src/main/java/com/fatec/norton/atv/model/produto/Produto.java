@@ -12,7 +12,9 @@ public class Produto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@Column(columnDefinition = "TEXT")
 	private String imageUrl;
+	@Column(columnDefinition = "TEXT")
 	private String descricao;
 	private BigDecimal valor;
 	private Integer promo;

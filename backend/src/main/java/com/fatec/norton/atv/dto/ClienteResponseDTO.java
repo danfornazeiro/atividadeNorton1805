@@ -1,6 +1,10 @@
 package com.fatec.norton.atv.dto;
 
 import com.fatec.norton.atv.model.cliente.Cliente;
+import com.fatec.norton.atv.model.pedido.Pedido;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public record ClienteResponseDTO(
 
@@ -10,7 +14,8 @@ public record ClienteResponseDTO(
         String email,
         String telefone,
         String logradouro,
-        CarrinhoResponseDTO cesta
+        CarrinhoResponseDTO cesta,
+        List<PedidoResponseDTO> pedido
 
 ) {
 
@@ -22,7 +27,10 @@ public record ClienteResponseDTO(
                 cliente.getEmail(),
                 cliente.getTelefone(),
                 cliente.getLogradouro(),
-                new CarrinhoResponseDTO(cliente.getCesta())
+                new CarrinhoResponseDTO(cliente.getCesta()),
+                cliente.getPedidos() == null ? List.of() : cliente.getPedidos().stream()
+                        .map(PedidoResponseDTO::new)
+                        .collect(Collectors.toList())
         );
     }
 }

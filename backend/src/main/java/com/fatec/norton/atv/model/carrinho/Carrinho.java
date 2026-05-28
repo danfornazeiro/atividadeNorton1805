@@ -4,6 +4,7 @@ import com.fatec.norton.atv.model.cliente.Cliente;
 import com.fatec.norton.atv.model.produto.Produto;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class Carrinho {
             joinColumns = @JoinColumn(name = "carrinho_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
-    private List<Produto> produtos;
+    private List<Produto> produtos = new ArrayList<>();
 
     public UUID getCarrinhoId() {
         return carrinhoId;

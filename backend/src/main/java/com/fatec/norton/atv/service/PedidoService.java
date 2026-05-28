@@ -8,9 +8,12 @@ import com.fatec.norton.atv.model.produto.Produto;
 import com.fatec.norton.atv.repository.CarrinhoRepository;
 import com.fatec.norton.atv.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,21 +23,32 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final EmailService emailService;
 
-
     public PedidoService(CarrinhoRepository carrinhoRepository, PedidoRepository pedidoRepository, EmailService emailService) {
         this.carrinhoRepository = carrinhoRepository;
         this.pedidoRepository = pedidoRepository;
         this.emailService = emailService;
     }
 
-
+    @Transactional // Garante que toda a operação aconteça na mesma transação do banco
     public PedidoResponseDTO fazerPedido(UUID carrinhoId) {
 
         Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
                 .orElseThrow(() -> new RuntimeException("Carrinho nao existe"));
 
+        if (carrinho.getCliente() == null) {
+            throw new RuntimeException("Não é possível fechar o pedido: este carrinho não possui um cliente associado!");
+        }
+
+        if (carrinho.getProdutos() == null || carrinho.getProdutos().isEmpty()) {
+            throw new RuntimeException("Não é possível fechar o pedido: o carrinho está vazio.");
+        }
+
+        List<Produto> produtosDoPedido = new ArrayList<>(carrinho.getProdutos());
+
         Pedido pedido = new Pedido();
         pedido.setCarrinho(carrinho);
+        pedido.setCliente(carrinho.getCliente());
+        pedido.setProdutos(produtosDoPedido);
 
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
@@ -45,7 +59,7 @@ public class PedidoService {
         StringBuilder produtosHtml = new StringBuilder();
         BigDecimal total = BigDecimal.ZERO;
 
-        for (Produto p : carrinho.getProdutos()) {
+        for (Produto p : produtosDoPedido) {
             total = total.add(p.getValor());
 
             produtosHtml.append("""
@@ -73,8 +87,6 @@ public class PedidoService {
             background: #1a1a1a;
             color: #ffffff;
         ">
-
-            <!-- Header com branding -->
             <div style="
                 background: #0f0f0f;
                 padding: 40px 30px;
@@ -100,9 +112,7 @@ public class PedidoService {
                 </div>
             </div>
 
-            <!-- Conteúdo Principal -->
             <div style="padding: 40px 30px;">
-
                 <h1 style="
                     font-size: 32px;
                     font-weight: 900;
@@ -121,7 +131,6 @@ public class PedidoService {
                     Obrigado, <strong style="color: #ffffff;">%s</strong>
                 </p>
 
-                <!-- Status -->
                 <div style="
                     background: #1a1a1a;
                     border-left: 3px solid #ffffff;
@@ -147,7 +156,6 @@ public class PedidoService {
                     </p>
                 </div>
 
-                <!-- Produtos -->
                 <div style="margin-bottom: 30px;">
                     <h2 style="
                         font-size: 14px;
@@ -162,7 +170,6 @@ public class PedidoService {
                     %s
                 </div>
 
-                <!-- Total -->
                 <div style="
                     background: #0f0f0f;
                     padding: 20px;
@@ -194,9 +201,8 @@ public class PedidoService {
                     </div>
                 </div>
 
-                <!-- CTA Button -->
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <a href="http://localhost:4200/pedidos"
+                    <a href="https://frontend-p2-psi.vercel.app/orders"
                        style="
                         background: #ffffff;
                         color: #000000;
@@ -213,10 +219,8 @@ public class PedidoService {
                         ACOMPANHAR PEDIDO
                     </a>
                 </div>
-
             </div>
 
-            <!-- Footer -->
             <div style="
                 background: #0f0f0f;
                 padding: 30px;
@@ -229,27 +233,25 @@ public class PedidoService {
                     Drop City - Streetwear Lab © 2026
                 </p>
                 <p style="margin: 0;">
-                    Conectando moda urbana com qualidade
+                    Conectando moda urbana com quality
                 </p>
             </div>
-
         </div>
         """.formatted(
                 carrinho.getCliente().getNome(),
                 produtosHtml.toString(),
                 total.setScale(2, RoundingMode.HALF_UP)
         );
-
         email.setBody(html);
-
         emailService.sendSimpleEmail(email);
+        PedidoResponseDTO respostaDTO = new PedidoResponseDTO(pedidoSalvo);
+        carrinho.getProdutos().clear();
+        carrinhoRepository.save(carrinho);
 
-        return new PedidoResponseDTO(pedidoSalvo);
+        return respostaDTO;
     }
-
 
     public void deletarPedido(UUID pedidoId){
         pedidoRepository.deleteById(pedidoId);
     }
-
 }

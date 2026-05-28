@@ -19,8 +19,16 @@ public class Cliente {
 	private String logradouro;
 	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private Carrinho cesta;
-	@OneToMany
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Pedido> pedidos;
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 
 	public Carrinho getCesta() {
 		return cesta;

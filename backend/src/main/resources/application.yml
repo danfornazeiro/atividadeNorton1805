@@ -3,9 +3,9 @@ spring:
     name: demo
 
   datasource:
-    url: jdbc:postgresql://172.17.0.1:5555/atvNorton1805
+    url: jdbc:postgresql://localhost:5432/atvNorton1805
     username: postgres
-    password: postgres
+    password: Dy@515286
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -19,8 +19,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USERNAME}
-    password: ${EMAIL_PASSWORD}
+    username: felipeacfornazeiro@gmail.com
+    password: yqai xche mids qjcn
 
     properties:
       mail:

@@ -16,7 +16,7 @@ public record CarrinhoResponseDTO(
     public CarrinhoResponseDTO(Carrinho carrinho) {
         this(
                 carrinho == null ? null : carrinho.getCarrinhoId(),
-                (carrinho == null || carrinho.getProdutos() == null) ? List.of() : carrinho.getProdutos()
+                (carrinho == null || carrinho.getProdutos() == null) ? List.of() : List.copyOf(carrinho.getProdutos())
         );
     }
 }
