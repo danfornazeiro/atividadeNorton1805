@@ -33,3 +33,5 @@ spring:
 email:
   subject: "Default Subject"
   message: "Default Message"
+
+

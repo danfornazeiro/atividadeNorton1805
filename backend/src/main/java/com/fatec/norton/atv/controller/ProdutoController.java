@@ -34,6 +34,11 @@ public class ProdutoController {
 		return produtoService.listarPeloNome(nome);
 	}
 
+	@GetMapping("/produtoCategoria/{categoria}")
+	public List<Produto> listarPelaCategoria(@PathVariable String categoria){
+		return produtoService.listarPorCategoria(categoria);
+	}
+
 	@PostMapping
 	public ResponseEntity<Produto> criar(@RequestBody Produto produto) {
 		Produto criado = produtoService.criar(produto);

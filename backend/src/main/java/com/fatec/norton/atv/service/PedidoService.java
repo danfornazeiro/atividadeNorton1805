@@ -29,7 +29,7 @@ public class PedidoService {
         this.emailService = emailService;
     }
 
-    @Transactional // Garante que toda a operação aconteça na mesma transação do banco
+    @Transactional
     public PedidoResponseDTO fazerPedido(UUID carrinhoId) {
 
         Carrinho carrinho = carrinhoRepository.findById(carrinhoId)

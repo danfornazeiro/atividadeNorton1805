@@ -25,6 +25,10 @@ public class ProdutoService {
 		return produtoRepository.findByNomeContainingIgnoreCase(nome);
 	}
 
+	public List<Produto> listarPorCategoria(String categoria){
+		return produtoRepository.findByCategoriaIgnoreCase(categoria);
+	}
+
 	public Produto criar(Produto produto) {
 		produto.setId(null);
 		return produtoRepository.save(produto);
@@ -34,13 +38,27 @@ public class ProdutoService {
 		Produto existente = produtoRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
 
-		existente.setNome(produto.getNome());
-		existente.setDescricao(produto.getDescricao());
-		existente.setImageUrl(produto.getImageUrl());
-		existente.setValor(produto.getValor());
-		existente.setPromo(produto.getPromo());
-		existente.setQuantidade(produto.getQuantidade());
-
+		if(produto.getNome() != null){
+			existente.setNome(produto.getNome());
+		}
+		if(produto.getDescricao() != null){
+			existente.setDescricao(produto.getDescricao());
+		}
+		if(produto.getImageUrl() != null){
+			existente.setImageUrl(produto.getImageUrl());
+		}
+		if(produto.getValor() != null){
+			existente.setValor(produto.getValor());
+		}
+		if(produto.getPromo() != null){
+			existente.setPromo(produto.getPromo());
+		}
+		if(produto.getQuantidade() != null){
+			existente.setQuantidade(produto.getQuantidade());
+		}
+		if(produto.getCategoria() != null){
+			existente.setCategoria(produto.getCategoria());
+		}
 		return produtoRepository.save(existente);
 	}
 

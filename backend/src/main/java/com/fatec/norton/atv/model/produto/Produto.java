@@ -19,9 +19,18 @@ public class Produto {
 	private BigDecimal valor;
 	private Integer promo;
 	private Integer quantidade;
+	private String categoria;
 
 	public String getImageUrl() {
 		return imageUrl;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	public void setImageUrl(String imageUrl) {
