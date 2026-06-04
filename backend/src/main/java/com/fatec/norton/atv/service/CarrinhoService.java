@@ -67,8 +67,29 @@ public class CarrinhoService {
 
         Carrinho carrinhoSalvo = carrinhoRepository.save(carrinho);
 
+        return new CarrinhoResponseDTO(carrinhoSalvo);
+    }
 
+    public CarrinhoResponseDTO removerProduto(UUID carrinhoId, Long produtoId) {
 
+        Carrinho carrinho = carrinhoRepository.findById(carrinhoId)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado."));
+
+        Produto produto = produtoRepository.findById(produtoId)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+
+        boolean removido = carrinho.getProdutos()
+                .removeIf(p -> p.getId().equals(produtoId));
+
+        if (!removido) {
+            throw new RuntimeException("Produto não está no carrinho.");
+        }
+
+        // Devolve ao estoque
+        produto.setQuantidade(produto.getQuantidade() + 1);
+        produtoRepository.save(produto);
+
+        Carrinho carrinhoSalvo = carrinhoRepository.save(carrinho);
 
         return new CarrinhoResponseDTO(carrinhoSalvo);
     }

@@ -29,4 +29,14 @@ public class CarrinhoController {
                                                                  @PathVariable  UUID carrinhoId){
         return ResponseEntity.ok(carrinhoService.adicionarProdutos(carrinhoRequestDTO, clienteId, carrinhoId));
     }
+
+    @DeleteMapping("/{carrinhoId}/produto/{produtoId}")
+    public ResponseEntity<CarrinhoResponseDTO> removerProduto(
+            @PathVariable UUID carrinhoId,
+            @PathVariable Long produtoId) {
+
+        return ResponseEntity.ok(
+                carrinhoService.removerProduto(carrinhoId, produtoId)
+        );
+    }
 }
