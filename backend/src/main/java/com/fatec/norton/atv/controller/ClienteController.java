@@ -38,7 +38,8 @@ public class ClienteController {
 	}
 
 	@PatchMapping("/{id}")
-	public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
+	public Cliente atualizar(@PathVariable Long id, @RequestBody ClienteRequestDTO cliente) {
+
 		return clienteService.atualizar(id, cliente);
 	}
 

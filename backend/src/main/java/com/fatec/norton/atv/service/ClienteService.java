@@ -202,7 +202,7 @@ public class ClienteService {
         return new ClienteResponseDTO(clienteSalvo);
     }
 
-    public Cliente atualizar(Long id, Cliente cliente) {
+    public Cliente atualizar(Long id, ClienteRequestDTO cliente) {
 
         Cliente existente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -210,11 +210,21 @@ public class ClienteService {
                         "Cliente não encontrado"
                 ));
 
-        existente.setNome(cliente.getNome());
-        existente.setEmail(cliente.getEmail());
-        existente.setSenha(cliente.getSenha());
-        existente.setTelefone(cliente.getTelefone());
-        existente.setLogradouro(cliente.getLogradouro());
+        if(cliente.getNome() != null){
+            existente.setNome(cliente.getNome());
+        }
+        if(cliente.getEmail() != null){
+            existente.setEmail(cliente.getEmail());
+        }
+        if(cliente.getSenha() != null){
+            existente.setSenha(cliente.getSenha());
+        }
+        if(cliente.getTelefone() != null){
+            existente.setTelefone(cliente.getTelefone());
+        }
+        if(cliente.getLogradouro() != null){
+            existente.setLogradouro(cliente.getLogradouro());
+        }
 
         Cliente atualizado = clienteRepository.save(existente);
 
